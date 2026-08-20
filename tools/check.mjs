@@ -90,6 +90,21 @@ console.log('\nroster integrity');
   ok('strokes go to the higher handicap', givenBad.length === 0, givenBad.map((d) => d.id).join(','));
 }
 
+console.log('\ncourse card');
+{
+  const h = roster.course.holes;
+  ok('18 holes', h.length === 18);
+  ok('par totals 72', h.reduce((a, x) => a + x.par, 0) === roster.course.par);
+  ok('out is 36', h.slice(0, 9).reduce((a, x) => a + x.par, 0) === 36);
+  ok('in is 36', h.slice(9).reduce((a, x) => a + x.par, 0) === 36);
+  ok('holes numbered 1-18 in order', h.every((x, i) => x.hole === i + 1));
+  ok('every par is 3, 4 or 5', h.every((x) => [3, 4, 5].includes(x.par)));
+  const si = h.map((x) => x.strokeIndex).sort((a, b) => a - b);
+  ok('stroke index is 1-18, each once', si.every((v, i) => v === i + 1));
+  ok('card is marked verified', roster.course.verified === true,
+     'placeholder data must not reach a deploy');
+}
+
 console.log('\nauth');
 ok('POST without a key is rejected', (await post('ryobi-jipp', flat(4), 'wrong')).status === 401);
 
@@ -114,6 +129,36 @@ console.log('\ntriple bogey cap');
   ok('gross keeps what was actually shot', u.gross === PARS.reduce((a, p) => a + p + 9, 0));
   ok('adjusted gross capped at triple bogey', u.adjustedGross === expected, `got ${u.adjustedGross} want ${expected}`);
   ok('net uses the capped figure', u.net === expected - 10, `got ${u.net}`);
+}
+
+console.log('\ncap is per hole, not off a flat par');
+{
+  store.clear();
+  const parTotal = PARS.reduce((a, b) => a + b, 0);
+
+  // An all-9s card cannot prove this: average par here is exactly 4, so a flat
+  // par-4 cap gives the same total as a per-hole cap. Blow up one hole at a
+  // time instead, on a par 3 and on a par 5, where the two differ.
+  const par3 = roster.course.holes.find((h) => h.par === 3).hole;
+  const par5 = roster.course.holes.find((h) => h.par === 5).hole;
+
+  await post('ryobi-neels', PARS.map((p, i) => (i + 1 === par3 ? 9 : p)));
+  let u = (await state()).units.find((x) => x.id === 'ryobi-neels');
+  let perHole = parTotal - 3 + 6;   // capped at that hole's par + 3
+  let flat = parTotal - 3 + 7;      // what a flat par-4 cap would give
+  ok(`blow-up on par 3 (hole ${par3}) caps at 6`, u.adjustedGross === perHole,
+     `got ${u.adjustedGross} want ${perHole}`);
+  ok('a flat par-4 cap would differ', perHole !== flat);
+
+  await post('ryobi-pat', PARS.map((p, i) => (i + 1 === par5 ? 15 : p)));
+  u = (await state()).units.find((x) => x.id === 'ryobi-pat');
+  perHole = parTotal - 5 + 8;
+  flat = parTotal - 5 + 7;
+  ok(`blow-up on par 5 (hole ${par5}) caps at 8`, u.adjustedGross === perHole,
+     `got ${u.adjustedGross} want ${perHole}`);
+  ok('a flat par-4 cap would differ', perHole !== flat);
+
+  store.clear();
 }
 
 console.log('\nrule 3 — best 6 of 7, worst dropped');

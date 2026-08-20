@@ -103,9 +103,16 @@ Other constants that are deliberately not computed:
   `roster.json` and never recomputed. The formula route lands on 11.5, which
   Excel rounds to 12 and LibreOffice rounds to 11 — same file, two answers. It
   is pinned for that reason.
-- **Triple bogey max** is applied server-side from `course.holes[].par`.
-  Those pars are a **placeholder** — verify them against the pro shop scorecard
-  and correct any that are wrong. Nothing else on the site depends on them.
+- **Triple bogey max** is applied server-side from `course.holes[].par`, per
+  hole. Par and stroke index are read off the President's Reserve scorecard and
+  `course.verified` is `true`; `npm run check` fails if that flag is ever
+  cleared, so placeholder data cannot reach a deploy.
+- **Stroke index** is recorded but drives nothing. Duels are settled on 18-hole
+  net totals, and which holes the strokes fall on does not change a total.
+
+  Note on testing the cap: average par here is exactly 4, so a card of all 9s
+  totals the same under a per-hole cap and a flat par-4 cap. `npm run check`
+  blows up one hole at a time, on a par 3 and a par 5, where the two differ.
 
 ## Scoring a card
 
