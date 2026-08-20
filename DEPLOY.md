@@ -216,8 +216,28 @@ The title is only a label — the binding stays `SCORES`, which is what the code
 reads. A distinct title avoids colliding with the `SCORES` namespace already on
 the account from the previous site.
 
-Paste that id over `REPLACE_WITH_KV_NAMESPACE_ID` on **line 21**, check it with
-`npm run dry:prod`, then:
+Paste that id over `REPLACE_WITH_KV_NAMESPACE_ID` on **line 21**. If you use
+`sed`, build the command with the real id already in it rather than a
+placeholder you mean to swap — a literal placeholder pastes straight through and
+the deploy fails at the API with `KV namespace '...' is not valid [code: 10042]`:
+
+```bash
+# wrong — PASTE_THE_ID_HERE goes in literally
+sed -i '' 's/REPLACE_WITH_KV_NAMESPACE_ID/PASTE_THE_ID_HERE/' wrangler.jsonc
+
+# right — the real id is already in the command
+sed -i '' 's/REPLACE_WITH_KV_NAMESPACE_ID/d47fb6a1a9204860a1542d218027ba3a/' wrangler.jsonc
+```
+
+Then confirm no placeholder survives anywhere in the file:
+
+```bash
+grep -nE 'REPLACE_WITH|PASTE_' wrangler.jsonc || echo "no placeholders left"
+npm run dry:prod
+```
+
+The dry run prints the id it will actually use. Read it before deploying — that
+is the step that catches a bad paste for free. Then:
 
 ```bash
 npm run deploy
