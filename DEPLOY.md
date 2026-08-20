@@ -209,10 +209,15 @@ Same Worker name, same URL — the four-team version is gone the moment this
 finishes.
 
 ```bash
-npx wrangler kv namespace create SCORES
+npx wrangler kv namespace create SCORES-PROD
 ```
 
-Paste that id over `REPLACE_WITH_KV_NAMESPACE_ID` on **line 21**, then:
+The title is only a label — the binding stays `SCORES`, which is what the code
+reads. A distinct title avoids colliding with the `SCORES` namespace already on
+the account from the previous site.
+
+Paste that id over `REPLACE_WITH_KV_NAMESPACE_ID` on **line 21**, check it with
+`npm run dry:prod`, then:
 
 ```bash
 npm run deploy

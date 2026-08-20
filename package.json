@@ -8,6 +8,7 @@
     "check": "node tools/check.mjs",
     "deploy:staging": "wrangler deploy --env staging",
     "dry": "wrangler deploy --env staging --dry-run",
+    "dry:prod": "wrangler deploy --env=\"\" --dry-run",
     "deploy": "wrangler deploy --env=\"\""
   },
   "devDependencies": {
