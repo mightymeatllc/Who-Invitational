@@ -105,6 +105,40 @@ console.log('\ncourse card');
      'placeholder data must not reach a deploy');
 }
 
+console.log('\nscramble pairs');
+{
+  // Committee number. It must survive the whole pipeline untouched — the White
+  // tee giveback is already inside it and must never be applied a second time.
+  const s0 = await state();
+  const pairs = s0.units.filter((u) => u.kind === 'scramble');
+  ok('two scramble units', pairs.length === 2);
+  ok('both come back off the API at 12', pairs.every((u) => u.handicap === 12),
+     pairs.map((u) => `${u.label}=${u.handicap}`).join(' '));
+  ok('each pair is two men scoring as one unit', pairs.every((u) => u.members.length === 2));
+  ok('the giveback is not applied twice', pairs.every((u) => u.handicap === roster.format.scramblePairHandicap));
+
+  // Net for a pair is adjusted gross minus 12, nothing else.
+  store.clear();
+  const parTotal = PARS.reduce((a, b) => a + b, 0);
+  await post('ryobi-scramble', PARS.map((p) => p + 1)); // one over on every hole
+  const u = (await state()).units.find((x) => x.id === 'ryobi-scramble');
+  ok('pair net is adjusted gross minus 12', u.net === parTotal + 18 - 12,
+     `got ${u.net} want ${parTotal + 18 - 12}`);
+  store.clear();
+}
+
+console.log('\nscoring reads par and nothing else');
+{
+  // If any rating or slope crept into the maths, a card of straight pars would
+  // not come back at exactly par.
+  store.clear();
+  await post('ryobi-dan', PARS.slice());
+  const u = (await state()).units.find((x) => x.id === 'ryobi-dan');
+  ok('a card of straight pars is gross 72', u.adjustedGross === 72, `got ${u.adjustedGross}`);
+  ok('and nets exactly 72 minus the handicap', u.net === 72 - 16, `got ${u.net}`);
+  store.clear();
+}
+
 console.log('\nauth');
 ok('POST without a key is rejected', (await post('ryobi-jipp', flat(4), 'wrong')).status === 401);
 

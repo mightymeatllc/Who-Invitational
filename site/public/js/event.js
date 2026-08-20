@@ -9,7 +9,7 @@ const facts = [
   ['The Field', `${f.teams} teams &times; ${f.playersPerTeam}`, '16 men, one round'],
   ['Scoring', `Best ${f.countBestUnits} of ${f.scoringUnitsPerTeam}`, 'Worst unit dropped and named'],
   ['Max per hole', f.maxScorePerHole, `Playing handicap ${f.handicapAllowance * 100}% of index`],
-  ['Tees', `${f.defaultTee} / ${f.scrambleTee}`, `Scramble pairs play ${f.scrambleTee} (${f.courseRating.white}) — the field plays ${f.defaultTee} (${f.courseRating.blue})`],
+  ['Tees', `${f.defaultTee} / ${f.scrambleTee}`, `The field plays ${f.defaultTee}. The two scramble pairs play ${f.scrambleTee} and give back three strokes for it — already inside their pair handicap of ${f.scramblePairHandicap}.`],
   ['Strokes given', `${f.strokesGiven.Ryobi} &ndash; ${f.strokesGiven['Black & Decker']}`, 'Ryobi &ndash; Black &amp; Decker'],
   ['The pot', money(f.pot), `${money(f.entryFee)} a man, winner take all`]
 ];

@@ -103,6 +103,16 @@ Other constants that are deliberately not computed:
   `roster.json` and never recomputed. The formula route lands on 11.5, which
   Excel rounds to 12 and LibreOffice rounds to 11 — same file, two answers. It
   is pinned for that reason.
+
+  The pairs play the White tees and give back three strokes for it, and that
+  giveback is **already inside the 12** — it is not applied again anywhere.
+  `npm run check` asserts the figure survives the whole pipeline untouched and
+  that a pair's net is adjusted gross minus 12 and nothing else.
+
+- **Scoring reads par and nothing else.** Course rating and slope are not used
+  in any calculation; `format.courseRating` is retained as unverified reference
+  and is not displayed. A card of straight pars is asserted to come back at
+  exactly 72.
 - **Triple bogey max** is applied server-side from `course.holes[].par`, per
   hole. Par and stroke index are read off the President's Reserve scorecard and
   `course.verified` is `true`; `npm run check` fails if that flag is ever

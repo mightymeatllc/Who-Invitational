@@ -22,6 +22,7 @@
     "indexCap": 25.0,
     "defaultTee": "Blue",
     "scrambleTee": "White",
+    "_courseRatingNote": "Reference only — unverified, and nothing on the site reads it. All scoring is computed from course.holes[].par.",
     "courseRating": { "blue": 71.1, "white": 68.4 },
     "scramblePairHandicap": 12,
     "scramblePairHandicapNote": "Committee number. Hardcoded — do not recompute.",
