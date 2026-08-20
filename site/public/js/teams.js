@@ -1,5 +1,5 @@
 import { chrome, badge, esc } from './site.js';
-import { PLAYERS } from './jabs.js';
+import { PLAYERS, PAIRS } from './jabs.js';
 
 const r = await chrome();
 
@@ -34,8 +34,9 @@ document.querySelector('[data-teams]').innerHTML = r.teams
             pair
               ? `<li class="is-scramble">
                    <span class="who">${esc(pair.name)}</span>
-                   <span class="role">One unit · ${esc(pair.players.join(' + '))}</span>
                    <span class="hdcp">${pair.handicap}</span>
+                   <span class="role">One scoring unit · ${esc(pair.players.join(' + '))} · White tees</span>
+                   ${PAIRS[pair.id] ? `<p class="jab">${esc(PAIRS[pair.id])}</p>` : ''}
                  </li>`
               : ''
           }
