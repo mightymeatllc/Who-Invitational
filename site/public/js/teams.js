@@ -14,8 +14,10 @@ document.querySelector('[data-teams]').innerHTML = r.teams
     return `
       <div class="teamcol" data-team="${t.id}">
         ${badge(t)}
-        <h3>${esc(t.name)}</h3>
-        <div class="strokes">${given} strokes given &nbsp;·&nbsp; 7 units &nbsp;·&nbsp; best 6 count</div>
+        <div class="crest">
+          <h3>${esc(t.name)}</h3>
+          <div class="strokes">${given} strokes given &nbsp;·&nbsp; 7 units &nbsp;·&nbsp; best 6 count</div>
+        </div>
         <ul class="roster">
           ${players
             .map((p) => {
@@ -54,7 +56,7 @@ tape.innerHTML =
       (p) => `<tr data-team="${p.team}">
         <td class="name">${esc(p.name)}</td>
         <td class="num">${p.index.toFixed(1)}${p.estimate ? ' <span class="est">EST</span>' : ''}</td>
-        <td class="num" style="color:var(--team)">${p.handicap}</td>
+        <td class="num" style="color:var(--team-text);font-weight:600">${p.handicap}</td>
         <td>${esc(p.teamRef.short)}</td>
         <td>${p.playsAs === 'scramble' ? 'Scramble' : 'Individual'}</td>
         <td>${esc(p.tee)}</td>

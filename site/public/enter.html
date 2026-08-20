@@ -4,10 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Post a Card — The Who? Invitational Open</title>
+<meta name="description" content="Enter a scorecard.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#08080a">
+<meta name="theme-color" content="#16341f">
+<link rel="preload" href="/fonts/AlfaSlabOne-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Oswald-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/BarlowCondensed-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Lora-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/css/site.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -15,18 +17,17 @@
 <body data-page="scoreboard">
 
 <header class="masthead">
-  <div class="wrap">
-    <h1 class="wordmark">The&nbsp;Who<span class="q">?</span> Invitational <span class="open">Open</span></h1>
-    <div class="presented">Presented by Ryobi</div>
-    <div class="eventline" data-eventline></div>
-    <nav class="tabs" data-nav aria-label="Primary"></nav>
-  </div>
+  <p class="kicker">Presented by Ryobi</p>
+  <h1 class="poster-type">The&nbsp;Who<span class="q">?</span><span class="line2">Invitational Open</span></h1>
 </header>
 
-<main class="wrap">
+<nav class="tabs" data-nav aria-label="Sections"></nav>
+
+<main class="sheet">
+
   <section aria-labelledby="h-post">
-    <div class="sechead"><h2 id="h-post">Post a Card</h2><span class="idx">Gross, hole by hole</span></div>
-    <p class="note" style="margin-bottom:20px">Enter gross strokes. The triple-bogey cap is applied for you — post what you actually shot. Leave a hole blank until it is played; gross shows on the scoreboard immediately, net appears only when all eighteen are in.</p>
+    <h2 class="band" id="h-post">Post a Card <span class="idx">Gross, hole by hole</span></h2>
+    <p class="note" style="margin-bottom:1.3rem">Enter gross strokes. The triple-bogey cap is applied for you &mdash; post what you actually shot. Leave a hole blank until it is played; gross shows on the scoreboard immediately, net appears only when all eighteen are in.</p>
 
     <form class="panel" data-form>
       <div class="field">
@@ -37,7 +38,6 @@
         <label for="key">Scorer key</label>
         <input type="password" id="key" name="key" autocomplete="current-password" required>
       </div>
-
       <div class="field">
         <label>Front nine</label>
         <div class="holes" data-front></div>
@@ -46,14 +46,14 @@
         <label>Back nine</label>
         <div class="holes" data-back></div>
       </div>
-
       <button class="btn" type="submit">Submit card</button>
       <div class="msg" data-msg role="status"></div>
     </form>
   </section>
+
 </main>
 
-<footer class="foot wrap" data-foot></footer>
+<footer class="foot" data-foot></footer>
 <script type="module" src="/js/enter.js"></script>
 </body>
 </html>

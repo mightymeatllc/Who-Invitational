@@ -1,15 +1,8 @@
-import { chrome, badge, esc } from './site.js';
+import { chrome, esc } from './site.js';
 import { money } from './data.js';
 import { CARTS } from './jabs.js';
 
 const r = await chrome();
-
-/* Hero: the two badges either side of a VS. Primary Teams-page placement is
-   bigger; this one is the promo. */
-document.querySelector('[data-hero-vs]').innerHTML =
-  `<div data-team="ryobi">${badge(r.teamById.ryobi)}</div>` +
-  `<div class="vs">vs</div>` +
-  `<div data-team="blackdecker">${badge(r.teamById.blackdecker)}</div>`;
 
 const f = r.format;
 const facts = [

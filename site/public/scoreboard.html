@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scoreboard — The Who? Invitational Open</title>
 <meta name="description" content="Live gross. Net when the card is finished. One winner, and one man on each team who contributed nothing.">
-<meta name="theme-color" content="#08080a">
+<meta name="theme-color" content="#16341f">
+<link rel="preload" href="/fonts/AlfaSlabOne-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Oswald-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/BarlowCondensed-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Lora-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/css/site.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -15,49 +16,43 @@
 <body data-page="scoreboard">
 
 <header class="masthead">
-  <div class="wrap">
-    <h1 class="wordmark">The&nbsp;Who<span class="q">?</span> Invitational <span class="open">Open</span></h1>
-    <div class="presented">Presented by Ryobi</div>
-    <div class="eventline" data-eventline></div>
-    <nav class="tabs" data-nav aria-label="Primary"></nav>
-  </div>
+  <p class="kicker">Presented by Ryobi</p>
+  <h1 class="poster-type">The&nbsp;Who<span class="q">?</span><span class="line2">Invitational Open</span></h1>
 </header>
 
-<main class="wrap">
+<nav class="tabs" data-nav aria-label="Sections"></nav>
+
+<main class="sheet">
 
   <div class="board-status" data-status role="status">
-    <span class="dot"></span><span>Connecting…</span>
+    <span class="dot"></span><span>Connecting&hellip;</span>
   </div>
 
-  <!-- A. The Winners' Circle. Everything else on this page is a footnote. -->
   <section data-winners aria-live="polite"></section>
 
-  <!-- B. The Drop. Permanent fixture, not a footnote. -->
   <section aria-labelledby="h-drop">
-    <div class="sechead"><h2 id="h-drop">The Drop</h2><span class="idx">Worst unit, each team</span></div>
+    <h2 class="band" id="h-drop">The Drop <span class="idx">Worst unit, each team</span></h2>
     <div class="drops" data-drops></div>
-    <p class="note" style="margin-top:14px">Every team drops its worst unit, including the team that wins. A man can take $100 home and still be the most useless golfer on his own side, and this page is going to say so.</p>
+    <p class="note" style="margin-top:1rem">Every team drops its worst unit, including the team that wins. A man can take $100 home and still be the most useless golfer on his own side, and this page is going to say so.</p>
   </section>
 
-  <!-- Live standings, with the current drop marked all afternoon. -->
   <section aria-labelledby="h-units">
-    <div class="sechead"><h2 id="h-units">Cards</h2><span class="idx">Best 6 of 7</span></div>
+    <h2 class="band" id="h-units">Cards <span class="idx">Best 6 of 7</span></h2>
     <div class="teamcols" data-units></div>
-    <p class="note" style="margin-top:14px">Gross posts live. Net stays hidden until a card has all eighteen holes on it — no early arithmetic, no negotiating. Team totals appear when every unit on both teams is in.</p>
+    <p class="note" style="margin-top:1rem">Gross posts live. Net stays hidden until a card has all eighteen holes on it &mdash; no early arithmetic, no negotiating. Team totals appear when every unit on both teams is in.</p>
   </section>
 
-  <!-- C. Duel by duel. -->
   <section aria-labelledby="h-duels">
-    <div class="sechead"><h2 id="h-duels">Duel by Duel</h2><span class="idx">Seven duels</span></div>
+    <h2 class="band" id="h-duels">Duel by Duel <span class="idx">Seven duels</span></h2>
     <div data-duels></div>
     <div class="disclaim">Duel results do not affect the team result. Side money is private and the committee settles nothing.</div>
   </section>
 
-  <p style="margin-top:30px"><a class="btn" href="/enter.html" style="text-decoration:none;display:inline-block">Post a card</a></p>
+  <p style="margin-top:1.6rem"><a class="btn" href="/enter.html">Post a card</a></p>
 
 </main>
 
-<footer class="foot wrap" data-foot></footer>
+<footer class="foot" data-foot></footer>
 <script type="module" src="/js/scoreboard.js"></script>
 </body>
 </html>

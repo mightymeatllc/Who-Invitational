@@ -90,7 +90,7 @@ function renderDrops(s) {
 
       if (!unit) {
         return `<article class="drop is-provisional" data-team="${t.id}">
-            <div class="title">The Drop &mdash; ${esc(t.short)}</div>
+            <div class="drop-head"><div class="title">The Drop &mdash; ${esc(t.short)}</div></div>
             <h3 style="text-decoration:none">Pending</h3>
             <div class="verdict">No completed cards yet. Somebody on this team is about to be named here and every one of them knows it.</div>
           </article>`;
@@ -120,8 +120,10 @@ function renderDrops(s) {
         : 'Currently contributing nothing. This slot updates as the cards come in, so there is still time — not much, and not for everyone, but some.';
 
       return `<article class="drop${ts.dropIsFinal ? '' : ' is-provisional'}" data-team="${t.id}">
-          ${badge(roster.teamById[t.id], 'default', 'badge--sm')}
-          <div class="title">${ts.dropIsFinal ? 'Biggest Loser' : 'Currently the drop'} &mdash; ${esc(t.short)}</div>
+          <div class="drop-head">
+            <div class="title">${ts.dropIsFinal ? 'Biggest Loser' : 'Currently the drop'} &mdash; ${esc(t.short)}</div>
+            ${badge(roster.teamById[t.id], 'default', 'badge--sm')}
+          </div>
           <h3>${esc(unit.label)}</h3>
           ${sub ? `<div class="sub">${esc(sub)}</div>` : ''}
           <div class="fig">

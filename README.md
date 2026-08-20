@@ -3,6 +3,22 @@
 Tournament site for Saturday, August 29 — Hermitage Golf Course, President's Reserve.
 Static pages plus a live scoreboard, both served by one Cloudflare Worker.
 
+## Design
+
+The bones are the previous program: a bone-paper sheet on a turf ground, the
+green plaque with its brass keyline, `.band` headings under a double rule, and
+folder tabs that clip to the top of the paper. Palette and type are unchanged
+from that site — turf `#16341f`, brass, bone, Alfa Slab One / Oswald / Lora.
+
+What changed: contrast is pushed harder, and the two teams own the pages that
+are about the two teams. On Teams, the Duel Card and the Scoreboard, Ryobi and
+Black+Decker take over in the structure of their own badges — Ryobi a filled
+block with a yellow frame, B+D a hollow one in orange.
+
+Note for future edits: raw `--team` (Ryobi `#d3d812`) is a badge colour and
+fails contrast as text on bone paper. Use `--team-text`, the darkened form, for
+type; keep `--team` for fills, frames and rules.
+
 There is no dedicated roast page. The material on each player is dealt out
 across the site — an epithet and a jab on every roster row, a committee note on
 every cart, a case note on every duel, and a personalised verdict on the
@@ -16,8 +32,9 @@ site/public/            static site (assets.directory)
   js/jabs.js            ← roast copy only, keyed by player name
   js/data.js            roster loader + derived views (units, opponents, pairs)
   js/site.js            shared chrome, logo helpers, escaping
-  fonts/                self-hosted Oswald + Barlow Condensed
+  fonts/                self-hosted Alfa Slab One + Oswald + Lora
   assets/logos/         the four supplied PNGs
+  assets/flyer.jpg      the group photo, carried over from the previous site
 site/src/index.js       the Worker: /api/* only, static files pass through to ASSETS
 tools/dev-server.mjs    local harness — runs the real Worker against an in-memory KV
 tools/check.mjs         asserts the scoring rules; run before any deploy

@@ -4,10 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teams — The Who? Invitational Open</title>
-<meta name="description" content="Team Ryobi and Team Black &amp; Decker. Eight men a side, seven scoring units, best six count.">
-<meta name="theme-color" content="#08080a">
+<meta name="description" content="Team Ryobi and Team Black & Decker. Eight men a side, seven scoring units, best six count.">
+<meta name="theme-color" content="#16341f">
+<link rel="preload" href="/fonts/AlfaSlabOne-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Oswald-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/BarlowCondensed-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Lora-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/css/site.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -15,36 +16,34 @@
 <body data-page="teams">
 
 <header class="masthead">
-  <div class="wrap">
-    <h1 class="wordmark">The&nbsp;Who<span class="q">?</span> Invitational <span class="open">Open</span></h1>
-    <div class="presented">Presented by Ryobi</div>
-    <div class="eventline" data-eventline></div>
-    <nav class="tabs" data-nav aria-label="Primary"></nav>
-  </div>
+  <p class="kicker">Presented by Ryobi</p>
+  <h1 class="poster-type">The&nbsp;Who<span class="q">?</span><span class="line2">Invitational Open</span></h1>
 </header>
 
-<main class="wrap">
+<nav class="tabs" data-nav aria-label="Sections"></nav>
+
+<main class="sheet">
 
   <section aria-labelledby="h-teams">
-    <div class="sechead"><h2 id="h-teams">Two Teams of Eight</h2><span class="idx">Sec. 01</span></div>
-    <p class="note" style="margin-bottom:20px">Six men a side play their own ball. Two play as a scramble pair off the White tees at a committee handicap of 12. Seven units, best six count, worst one dropped and named. Every man below has been assessed twice — once by the handicap system, and once by everybody else.</p>
+    <h2 class="band" id="h-teams">Two Teams of Eight <span class="idx">Sec. 01</span></h2>
+    <p class="note" style="margin-bottom:1.3rem">Six men a side play their own ball. Two play as a scramble pair off the White tees at a committee handicap of 12. Seven units, best six count, worst one dropped and named. Every man below has been assessed twice &mdash; once by the handicap system, and once by everybody else.</p>
     <div class="teamcols" data-teams></div>
   </section>
 
   <section aria-labelledby="h-tape">
-    <div class="sechead"><h2 id="h-tape">Tale of the Tape</h2><span class="idx">Sec. 02</span></div>
+    <h2 class="band" id="h-tape">Tale of the Tape <span class="idx">Sec. 02</span></h2>
     <div class="tablewrap"><table data-tape><caption class="sr-only">Every player, index, playing handicap, team and role</caption></table></div>
-    <p class="note" style="margin-top:16px">Playing handicap is 90% of index, capped at a 25 index. Four men carry a committee estimate rather than an established index, which is the polite phrasing. Three of them are in the scramble, where the damage is contained. The fourth has a simulator in his garage and a story about never using it.</p>
+    <p class="note" style="margin-top:1rem">Playing handicap is 90% of index, capped at a 25 index. Four men carry a committee estimate rather than an established index, which is the polite phrasing. Three of them are in the scramble, where the damage is contained. The fourth has a simulator in his garage and a story about never using it.</p>
   </section>
 
   <section aria-labelledby="h-spread">
-    <div class="sechead"><h2 id="h-spread">The Spread</h2><span class="idx">Sec. 03</span></div>
-    <div class="panel" data-spread></div>
+    <h2 class="band" id="h-spread">The Spread <span class="idx">Sec. 03</span></h2>
+    <div class="stack" data-spread></div>
   </section>
 
 </main>
 
-<footer class="foot wrap" data-foot></footer>
+<footer class="foot" data-foot></footer>
 <script type="module" src="/js/teams.js"></script>
 </body>
 </html>

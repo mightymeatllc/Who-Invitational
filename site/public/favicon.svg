@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The Who? Invitational Open">
-  <rect width="64" height="64" fill="#231F20"/>
-  <rect x="3" y="3" width="58" height="58" fill="none" stroke="#D3D812" stroke-width="6"/>
-  <text x="32" y="47" font-family="Oswald, Arial Narrow, sans-serif" font-size="42" font-weight="700"
-        text-anchor="middle" fill="#F28122">?</text>
+  <rect width="64" height="64" fill="#16341f"/>
+  <rect x="4" y="4" width="56" height="56" fill="none" stroke="#d8ae2b" stroke-width="3"/>
+  <text x="32" y="47" font-family="Alfa Slab One, Georgia, serif" font-size="40" font-weight="400"
+        text-anchor="middle" fill="#efe9da">?</text>
 </svg>

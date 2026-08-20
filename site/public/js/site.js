@@ -34,13 +34,16 @@ export async function chrome() {
   const e = roster.event;
   const here = document.body.dataset.page;
 
-  const line = document.querySelector('[data-eventline]');
-  if (line) {
-    line.innerHTML =
-      `<b>${esc(e.dateLabel)}</b><span class="sep">·</span>${esc(e.course)}` +
-      `<span class="sep">·</span>${esc(e.location)}<span class="sep">·</span>${esc(e.teeTimes)}` +
-      `<span class="sep">·</span>${esc(e.afterparty)}`;
-  }
+  /* The plaque: the program's signature device, filled from roster.json so the
+     date and venue exist in exactly one place. */
+  const fill = (sel, text) => {
+    const el = document.querySelector(sel);
+    if (el) el.textContent = text;
+  };
+  fill('[data-date]', e.dateLabel);
+  fill('[data-tee]', e.teeTimes);
+  fill('[data-course]', `${e.course} — ${e.location}`);
+  fill('[data-after]', e.afterparty);
 
   const nav = document.querySelector('[data-nav]');
   if (nav) {

@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Who? Invitational Open — August 29</title>
 <meta name="description" content="Two teams of eight. One round. $800, winner take all. Hermitage Golf Course, President's Reserve.">
-<meta name="theme-color" content="#08080a">
+<meta name="theme-color" content="#16341f">
+<link rel="preload" href="/fonts/AlfaSlabOne-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Oswald-variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/BarlowCondensed-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Lora-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/css/site.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -15,58 +16,68 @@
 <body data-page="event">
 
 <header class="masthead">
-  <div class="wrap">
-    <h1 class="wordmark">The&nbsp;Who<span class="q">?</span> Invitational <span class="open">Open</span></h1>
-    <div class="presented">Presented by Ryobi</div>
-    <div class="eventline" data-eventline></div>
-    <nav class="tabs" data-nav aria-label="Primary"></nav>
-  </div>
+  <p class="kicker">Presented by Ryobi</p>
+  <h1 class="poster-type">The&nbsp;Who<span class="q">?</span><span class="line2">Invitational Open</span></h1>
 </header>
 
-<main class="wrap">
+<nav class="tabs" data-nav aria-label="Sections"></nav>
 
-  <section class="hero" aria-labelledby="h-card">
-    <div class="kicker">One round · Sixteen men · No second place</div>
-    <h2 id="h-card" class="sr-only">The card</h2>
-    <div class="hero-vs" data-hero-vs></div>
-    <dl class="factgrid" data-facts></dl>
-  </section>
+<main class="sheet">
+
+  <div class="plaque">
+    <h2 data-date>Saturday, August 29</h2>
+    <p class="plaque-line" data-tee></p>
+    <p class="plaque-line" data-course></p>
+    <p class="plaque-line" data-after></p>
+    <div class="rule">&#9670;</div>
+  </div>
+
+  <p class="lede">Sixteen men, two teams, one round, and eight hundred dollars that only one side is going home with.
+  Everything you need is on these four pages &mdash; find your team, find your cart, find the man you are playing for money,
+  and turn up with a dozen golf balls and a thicker skin than you had last year.</p>
+
+  <figure class="flyer-wrap">
+    <img class="flyer" src="/assets/flyer.jpg" width="900" height="1243" decoding="async"
+         alt="The Who? Invitational Open flyer: the field posed on the course and in the pool, with the date and location.">
+    <figcaption class="flyer-cap">The field. Sixteen men, one of whom will be named on the scoreboard as the worst.</figcaption>
+  </figure>
 
   <section aria-labelledby="h-game">
-    <div class="sechead"><h2 id="h-game">The Game</h2><span class="idx">Sec. 01</span></div>
-    <div class="panel">
-      <p>Two teams of eight. One round of individual net stroke play. Six men a side play their own ball; two play as a 2-man scramble pair, which gives each team <b>seven scoring units</b> — six individual net scores and one scramble net score.</p>
-      <p><b>Team score is the best SIX of those seven.</b> The worst unit on each team is dropped, counts for nothing, and is named on the scoreboard by name. That is not an accident of the format. That is the format.</p>
-      <p>The scramble pair can be the dropped unit. Two men, one ball, still worthless — a live possibility on both sides.</p>
+    <h2 class="band" id="h-game">The Game <span class="idx">Sec. 01</span></h2>
+    <div class="stack">
+      <p>Two teams of eight. One round of individual net stroke play. Six men a side play their own ball; two play as a 2-man scramble pair, which gives each team <b>seven scoring units</b> &mdash; six individual net scores and one scramble net score.</p>
+      <p><b>Team score is the best SIX of those seven.</b> The worst unit on each team is dropped, counts for nothing, and is named on the scoreboard. That is not an accident of the format. That is the format.</p>
+      <p>The scramble pair can be the dropped unit. Two men, one ball, still worthless &mdash; live on both sides.</p>
       <p class="note">Max score on any hole is triple bogey. Playing handicaps are 90% of index, capped at a 25 index. Everyone plays Blue except the two scramble pairs, who play White and give back three strokes for the privilege.</p>
       <p>The committee has already received two written enquiries about how to reach the triple-bogey cap deliberately and how to land on the drop score on purpose. Both came from the same man. He is playing in the scramble, which means that for eighteen holes he only has to convince Terb, and Terb cannot see where the ball went anyway.</p>
     </div>
+    <dl class="facts" data-facts></dl>
   </section>
 
   <section aria-labelledby="h-money">
-    <div class="sechead"><h2 id="h-money">The Money</h2><span class="idx">Sec. 02</span></div>
-    <div class="panel" data-money></div>
-    <p class="note" style="margin-top:16px">Four of the sixteen carry a committee estimate rather than an established index — a phrase that means nobody has ever seen them post a card. One of them keeps a simulator in his garage. Another moved three strokes last month and offered nothing. The committee has arranged for those two to play each other, which is as close to justice as it was able to get with the budget available.</p>
+    <h2 class="band" id="h-money">The Money <span class="idx">Sec. 02</span></h2>
+    <div class="stack" data-money></div>
+    <p class="note" style="margin-top:1rem">Four of the sixteen carry a committee estimate rather than an established index &mdash; a phrase meaning nobody has ever seen them post a card. One keeps a simulator in his garage. Another moved three strokes last month and offered nothing. The committee has arranged for those two to play each other, which is as close to justice as it could get on the budget available.</p>
   </section>
 
   <section aria-labelledby="h-carts">
-    <div class="sechead"><h2 id="h-carts">Carts &amp; Tee Groups</h2><span class="idx">Sec. 03</span></div>
-    <p class="note" style="margin-bottom:16px">Groups go off ten minutes apart. Carts do not follow the duels and never will; that argument is closed. The pairings were made carefully, by which the committee means they were made with complete knowledge of what will happen and no intention whatsoever of preventing it.</p>
+    <h2 class="band" id="h-carts">Carts &amp; Tee Groups <span class="idx">Sec. 03</span></h2>
+    <p class="note" style="margin-bottom:1rem">Groups go off ten minutes apart. Carts do not follow the duels and never will; that argument is closed. The pairings were made carefully, by which the committee means they were made with complete knowledge of what will happen and no intention whatsoever of preventing it.</p>
     <div class="tablewrap"><table data-carts><caption class="sr-only">Cart assignments and tee groups</caption></table></div>
   </section>
 
   <section aria-labelledby="h-after">
-    <div class="sechead"><h2 id="h-after">Afterward</h2><span class="idx">Sec. 04</span></div>
-    <div class="panel">
-      <p>Pool party at <b>Toe's Abode</b> when the cards are in. The pool has no membership committee, no waitlist, no application process and no standards of any kind — it is open to all sixteen men, which for at least one of them is the entire problem.</p>
-      <p>The host has never cooked anything in his life, so dinner will arrive by app, in bags, carried to the door by a stranger. Bring your own towel. He will have paid someone for those too.</p>
-      <p>Two things are guaranteed before midnight. Toe and Adam will get into it, because they have never once failed to, and now there is a swimming pool for the second act. And Ron will finally be in a pool that did not ask him for a membership, standing five feet from the man who has spent three years telling him about the one that did.</p>
+    <h2 class="band" id="h-after">Afterward <span class="idx">Sec. 04</span></h2>
+    <div class="stack">
+      <p>Pool party at <b>Toe's Abode</b> once the cards are in. No membership committee, no waitlist, no application, no standards of any kind. Open to all sixteen men, which for exactly one of them is the entire problem.</p>
+      <p>Dinner arrives by app, in bags, handed over at the door by a stranger, because the host has not personally prepared a meal within living memory. The house will be immaculate. The group has a theory about why, which it has agreed to keep at the level of rumour and off this page, and which it will be discussing in the pool by half past eight.</p>
+      <p>Three things happen before midnight and the committee is not going to pretend otherwise. Toe and Adam get into it, as they have at every event on record, and this time there is water. Ron finally stands in a pool that never asked him for a membership, five feet from the man who has spent years describing the one that did. And Ron has announced he will be wearing a yarmulke on Saturday, which he believes settles the question of who is more Jewish. It settles nothing. Latex still has the membership.</p>
     </div>
   </section>
 
 </main>
 
-<footer class="foot wrap" data-foot></footer>
+<footer class="foot" data-foot></footer>
 <script type="module" src="/js/event.js"></script>
 </body>
 </html>
