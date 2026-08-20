@@ -60,15 +60,15 @@ npm run check       # scoring-rule assertions (39 checks)
 
 ## Deploying
 
-Nothing is deployed yet. Both commands need a KV namespace id filled into
-`wrangler.jsonc` first.
+Nothing is deployed yet. **See `DEPLOY.md` for the step-by-step.** In short,
+both commands need a KV namespace id filled into `wrangler.jsonc` first.
 
 ```bash
 npx wrangler kv namespace create SCORES --env staging
 npx wrangler deploy --env staging     # who-invitational-staging.<you>.workers.dev
 
 npx wrangler kv namespace create SCORES
-npx wrangler deploy                   # production
+npx wrangler deploy --env=""          # production
 ```
 
 The scorer key is `meat`, set as a plain var in `wrangler.jsonc`. It lives in
