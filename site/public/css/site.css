@@ -73,7 +73,7 @@ body {
   background-attachment: fixed;
 }
 
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: var(--clay); }
 h1, h2, h3 { margin: 0; }
 p { margin: 0 0 1rem; }
@@ -227,6 +227,7 @@ p:last-child { margin-bottom: 0; }
 .flyer-wrap { text-align: center; margin: 1.4rem 0 .6rem; }
 .flyer {
   width: 100%;
+  height: auto;
   max-width: 440px;
   margin: 0 auto;
   border: 1px solid var(--bone-edge);

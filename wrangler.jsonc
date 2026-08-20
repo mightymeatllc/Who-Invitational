@@ -24,8 +24,10 @@
 
   "vars": {
     // Anyone posting a card must send this in X-Scorer-Key.
-    // Override for production with:  npx wrangler secret put SCORER_KEY
-    "SCORER_KEY": "who29"
+    // This file is in the repo, so this value is public to anyone who can read
+    // it. That is fine for a 16-man tournament; if you ever want it private,
+    // delete this block and run:  npx wrangler secret put SCORER_KEY
+    "SCORER_KEY": "meat"
   },
 
   "observability": { "enabled": true },
@@ -44,7 +46,7 @@
           "id": "REPLACE_WITH_STAGING_KV_NAMESPACE_ID"
         }
       ],
-      "vars": { "SCORER_KEY": "who29-staging" }
+      "vars": { "SCORER_KEY": "meat" }
     }
   }
 }

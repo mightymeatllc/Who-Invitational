@@ -48,7 +48,7 @@ const SCORES = {
   }
 };
 
-const env = { ASSETS, SCORES, SCORER_KEY: 'who29' };
+const env = { ASSETS, SCORES, SCORER_KEY: 'meat' };
 
 createServer(async (req, res) => {
   const body = ['GET', 'HEAD'].includes(req.method)

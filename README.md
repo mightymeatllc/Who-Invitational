@@ -71,7 +71,10 @@ npx wrangler kv namespace create SCORES
 npx wrangler deploy                   # production
 ```
 
-Set a real scorer key before the 29th — the checked-in default is a placeholder:
+The scorer key is `meat`, set as a plain var in `wrangler.jsonc`. It lives in
+the repo, so anyone who can read the repo can read the key — fine for sixteen
+men who all know each other. To make it private instead, delete the `vars` block
+and run:
 
 ```bash
 npx wrangler secret put SCORER_KEY
