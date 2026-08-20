@@ -39,6 +39,9 @@ for (const [name, path] of pages) {
         .map((i) => {
           const r = i.getBoundingClientRect();
           if (!r.width || !r.height) return null;
+          // contain / scale-down / none letterbox rather than stretch, so the
+          // element box is expected to differ from the image ratio.
+          if (getComputedStyle(i).objectFit !== 'fill') return null;
           const natural = i.naturalWidth / i.naturalHeight;
           const shown = r.width / r.height;
           const off = Math.abs(shown - natural) / natural;

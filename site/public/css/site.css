@@ -280,8 +280,21 @@ p:last-child { margin-bottom: 0; }
   padding: .7rem 1rem;
   display: block;
 }
-.badge img { width: 100%; max-width: 700px; margin-inline: auto; }
-.badge--sm { padding: .35rem .5rem; width: max-content; outline-offset: 2px; }
+/* The two source files are edge-to-edge artwork but different shapes: Ryobi is
+   a wide rectangle at 1383x585 (2.36:1), Black+Decker a squarer rounded-rect at
+   1200x620 (1.94:1). Rendering both at width:100% made B+D 22% taller than
+   Ryobi and knocked every row that pairs them out of alignment. Giving both a
+   shared box with object-fit:contain sets them to equal HEIGHT instead, which
+   is how two logos should be set together — the widths differ because the
+   badges genuinely are different shapes. */
+.badge img {
+  width: 100%;
+  max-width: 700px;
+  margin-inline: auto;
+  aspect-ratio: 1383 / 585;
+  object-fit: contain;
+}
+.badge--sm { padding: .35rem .5rem; outline-offset: 2px; }
 .badge--sm img { width: 84px; }
 
 /* ── Tables ──────────────────────────────────────────────────────────────── */
@@ -414,13 +427,26 @@ td.jabcell { min-width: 250px; font-size: .88rem; line-height: 1.45; color: var(
 }
 
 /* ── Scoreboard ──────────────────────────────────────────────────────────── */
+/* Status strip and a Post-a-card button share the top bar, so a man with a
+   finished card does not have to scroll the whole board to enter it. */
+.board-bar {
+  display: flex; gap: .6rem; align-items: stretch; flex-wrap: wrap;
+  margin-bottom: 1.6rem;
+}
 .board-status {
+  flex: 1 1 15rem;
   display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
   font-family: var(--util); text-transform: uppercase; letter-spacing: .16em;
   font-size: .64rem; color: var(--bone-dim);
   background: var(--turf); border: 1px solid var(--brass-dim);
-  padding: .6rem .8rem; margin-bottom: 1.6rem;
+  padding: .6rem .8rem;
 }
+.btn--post {
+  flex: 0 0 auto;
+  display: flex; align-items: center;
+  padding-block: .5rem; font-size: .7rem; white-space: nowrap;
+}
+@media (max-width: 460px) { .btn--post { flex: 1 1 100%; justify-content: center; } }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--clay); flex: 0 0 auto; }
 .dot.live { background: #6fbf5e; box-shadow: 0 0 0 0 rgba(111,191,94,.6); animation: pulse 2.2s infinite; }
 @keyframes pulse {
