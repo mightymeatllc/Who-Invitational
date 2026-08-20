@@ -111,16 +111,5 @@
     { "cart": 6, "riders": ["Landon", "Pat"],  "group": "C" },
     { "cart": 7, "riders": ["String", "Terb"], "group": "D" },
     { "cart": 8, "riders": ["Rat", "Hulk"],    "group": "D" }
-  ],
-
-  "_pending": {
-    "milo": {
-      "status": "OUT pending knee replacement decision",
-      "note": "If Milo plays, he takes Adam's seat and Adam is out. Field stays at 16.",
-      "index": 25.0,
-      "handicap": 23,
-      "estimate": true,
-      "warning": "Milo at a committee 23 in Adam's 10-stroke seat moves Ryobi from 90 to 103 strokes given — a 12-stroke spread against Black & Decker's 91. Rebalance the teams before publishing."
-    }
-  }
+  ]
 }

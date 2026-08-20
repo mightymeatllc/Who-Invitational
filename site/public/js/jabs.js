@@ -95,18 +95,6 @@ export const PLAYERS = {
     drop: 'Contributed nothing, by a method the committee has elected not to describe.'
   }
 
-  /*
-   * MILO — ships commented out. See _pending.milo in data/roster.json.
-   * Milo and Adam are mutually exclusive; the field is 16 either way.
-   * If the knee goes the other way, uncomment this and swap the Adam record in
-   * data/roster.json — every page follows.
-   *
-   * ,Milo: {
-   *   tag: 'Medically Exempt',
-   *   line: 'Spent the entire build of this tournament listed as questionable, which got him a committee 25 and no round on record to argue with it. A man who can extract a 23 handicap from a knee surgery has understood this event better than the men who organised it.',
-   *   drop: 'Came back off a knee replacement to finish last, which at least means the knee is not the problem.'
-   * }
-   */
 };
 
 /* Teams page — the two scramble pairs score as one unit, so they get one jab. */

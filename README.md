@@ -118,20 +118,16 @@ POST   /api/card               {unitId, holes:[18]}   X-Scorer-Key
 DELETE /api/card?unit=<id>     wipe a card            X-Scorer-Key
 ```
 
-## The Milo contingency
+## The field
 
-Milo is out pending a knee decision. If he plays he takes Adam's seat and the
-field stays at 16:
+Settled: Milo is out, Adam is in at an 11.5 index playing 10. That is what
+`data/roster.json` has, and Ryobi's 90 strokes given already reflects it.
 
-1. Swap the Adam record in `data/roster.json` for Milo — index 25.0, playing 23,
-   `estimate: true`, same team/duel/cart.
-2. Uncomment the Milo entry in `js/jabs.js`.
-
-Every page follows automatically. **The swap is not balanced:** Adam plays off
-10 and Milo off a committee 23, which moves Ryobi from 90 strokes given to 103
-against Black & Decker's 91 — a 12-stroke spread where the committee's own rule
-of thumb is ±2. Rebalance the teams before publishing. The warning is repeated
-in `js/data.js` and in `_pending.milo.warning`.
+Swapping a player is still a one-record edit in `data/roster.json` — team,
+duel, cart and every page follow from it — plus an entry in `js/jabs.js` keyed
+to the same name. If you ever do swap someone, check the strokes-given spread
+afterwards: the committee's rule of thumb is ±2, and `npm run check` asserts
+that both teams' totals match the figures in `format.strokesGiven`.
 
 ## Logo rules
 
