@@ -195,6 +195,77 @@ console.log('\ncap is per hole, not off a flat par');
   store.clear();
 }
 
+console.log('\nrunning net');
+{
+  store.clear();
+  const SI = Object.fromEntries(roster.course.holes.map((h) => [h.hole, h.strokeIndex]));
+  const strokesOnHole = (hcp, si) => {
+    if (hcp <= 0) return 0;
+    const loops = Math.floor(hcp / 18);
+    return si <= hcp - loops * 18 ? loops + 1 : loops;
+  };
+
+  // The allocation must sum to the handicap for every unit, or a running net
+  // could never agree with the finished net.
+  for (const h of [3, 10, 12, 16, 21, 23]) {
+    const total = roster.course.holes.reduce((a, x) => a + strokesOnHole(h, SI[x.hole]), 0);
+    ok(`handicap ${h} allocates to exactly ${h} strokes`, total === h, `got ${total}`);
+  }
+
+  // Net posts from the very first hole.
+  await post('ryobi-landon', PARS.map((p, i) => (i === 0 ? p + 2 : null)));
+  let u = (await state()).units.find((x) => x.id === 'ryobi-landon');
+  ok('net exists after one hole', u.netThrough !== null);
+  ok('one hole reported', u.holesPlayed === 1);
+  ok('team total still sealed', (await state()).teams.ryobi.total === null);
+
+  // Half a card.
+  await post('ryobi-landon', PARS.map((p, i) => (i < 9 ? p + 1 : null)));
+  u = (await state()).units.find((x) => x.id === 'ryobi-landon');
+  const front = PARS.slice(0, 9);
+  const expectFront = front.reduce((a, p, i) => a + (p + 1) - strokesOnHole(23, SI[i + 1]), 0);
+  ok('running net through 9 is right', u.netThrough === expectFront, `got ${u.netThrough} want ${expectFront}`);
+  ok('to-par through 9 is right', u.toPar === expectFront - front.reduce((a, b) => a + b, 0));
+  ok('the 18-hole net is still withheld', u.net === null);
+
+  // THE invariant: finish the card and the running net must land exactly on
+  // the official net. If allocation and handicap ever disagree, this breaks.
+  await post('ryobi-landon', PARS.map((p) => p + 1));
+  u = (await state()).units.find((x) => x.id === 'ryobi-landon');
+  ok('running net equals the finished net', u.netThrough === u.net, `${u.netThrough} vs ${u.net}`);
+  ok('and equals adjusted gross minus handicap', u.net === u.adjustedGross - u.handicap);
+  ok('to-par equals net minus 72', u.toPar === u.net - 72);
+  store.clear();
+}
+
+console.log('\nlive drop and live duels');
+{
+  store.clear();
+  // Two men on the same team, one hole each, one of them much worse.
+  await post('ryobi-jipp', PARS.map((p, i) => (i === 0 ? p : null)));
+  await post('ryobi-dan', PARS.map((p, i) => (i === 0 ? p + 6 : null)));
+  let s2 = await state();
+  ok('the drop is named from the first hole', s2.teams.ryobi.dropUnitId !== null);
+  ok('and it is the man playing badly', s2.teams.ryobi.dropUnitId === 'ryobi-dan',
+     `got ${s2.teams.ryobi.dropUnitId}`);
+  ok('but it is not final', s2.teams.ryobi.dropIsFinal === false);
+
+  // Duel 5 is Dan v Latex. Give Latex the same one hole, played well.
+  await post('blackdecker-latex', PARS.map((p, i) => (i === 0 ? p : null)));
+  s2 = await state();
+  const d5 = s2.duels.find((d) => d.id === 5);
+  ok('duel runs live from one common hole', d5.through === 1);
+  ok('and names a leader', d5.leader === 'blackdecker', `got ${d5.leader}`);
+  ok('with a margin', d5.margin > 0);
+  ok('but is not settled', d5.settled === false && d5.winner === null);
+
+  // A duel where only one man has posted must not claim a leader.
+  const d1 = s2.duels.find((d) => d.id === 1);
+  ok('one-sided duel has no common holes', d1.through === 0);
+  ok('and names no leader', d1.leader === null);
+  store.clear();
+}
+
 console.log('\nrule 3 — best 6 of 7, worst dropped');
 {
   store.clear();

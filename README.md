@@ -97,8 +97,25 @@ browser is a rule String has already broken.
 | Rule | Behaviour |
 |---|---|
 | Gross is live | Posts to the board the moment a hole is entered. |
-| Net is sealed | Withheld until a card has all eighteen holes on it. |
+| Net is live | Running net over the holes played, allocated by stroke index. |
 | Team totals are sealed | Withheld until every unit on **both** teams is in. |
+
+Net was originally withheld until a card had all eighteen holes. It is now live,
+because the stroke index off the President's Reserve card makes a running net a
+real figure rather than a part-total: each hole's strokes are allocated by
+index, so `netThrough` at eighteen holes equals `adjustedGross - handicap`
+exactly. `npm run check` asserts that invariant, and asserts the allocation sums
+to the playing handicap for every handicap in the field.
+
+Comparisons use `toPar` — net against the par of the holes actually played —
+because that is the only figure that compares fairly between two men through
+different numbers of holes. The live drop indicator ranks on it, which is why
+the drop is named from the first hole rather than waiting for finished cards.
+
+Duels run live over the holes **both** men have played. A man through twelve
+against a man through six would otherwise say more about pace of play than about
+golf. Both the Scoreboard and the Duel Card draw them with the same shared
+`js/duelrow.js`, so the two pages cannot disagree about who is winning.
 
 The prompt said "team totals once all cards are in," which could be read as
 *that team's* cards. It is implemented as **all fourteen**: publishing one team's

@@ -1,9 +1,13 @@
 import { chrome, badge, esc } from './site.js';
 import { money } from './data.js';
 import { PLAYERS } from './jabs.js';
+import { duelRow } from './duelrow.js';
 
 const roster = await chrome();
 const $ = (sel) => document.querySelector(sel);
+
+/* Net relative to the par of the holes played. E for level, +3, -1. */
+const toPar = (n) => (n === null || n === undefined ? '' : n === 0 ? 'E' : n > 0 ? `+${n}` : `${n}`);
 
 let revealed = false; // Winners' Circle animation fires once, not on every poll.
 
@@ -26,8 +30,8 @@ function render(s) {
   $('[data-status]').innerHTML =
     `<span class="dot ${s.everyoneIn ? '' : 'live'}"></span>` +
     `<span>${s.everyoneIn ? 'Final' : 'Live'}</span>` +
-    `<span>${inCount} of ${s.units.length} cards in</span>` +
-    `<span>Net hidden until 18 holes are posted</span>`;
+    `<span>${inCount} of ${s.units.length} cards complete</span>` +
+    `<span>Nets update as holes are posted</span>`;
 
   renderWinners(s);
   renderDrops(s);
@@ -163,8 +167,14 @@ function renderUnits(s) {
                   }${u.kind === 'scramble' ? `<small>${esc(u.members.join(' + '))}</small>` : ''}</span>
                   <span class="v">${u.holesPlayed ? u.gross : '&mdash;'}</span>
                   <span class="v">${u.handicap}</span>
-                  <span class="v ${u.complete ? 'net' : 'pending'}">${
-                    u.complete ? u.net : `${u.holesPlayed}/18`
+                  <span class="v net${u.complete ? '' : ' live'}">${
+                    u.holesPlayed ? u.netThrough : '&mdash;'
+                  }${
+                    u.holesPlayed && !u.complete
+                      ? `<small>thru ${u.holesPlayed} &middot; ${toPar(u.toPar)}</small>`
+                      : u.complete
+                      ? `<small>${toPar(u.toPar)}</small>`
+                      : ''
                   }</span>
                 </div>`
               )
@@ -181,33 +191,7 @@ function renderUnits(s) {
 
 /* ── C. Duel by duel ──────────────────────────────────────────────────────── */
 function renderDuels(s) {
-  $('[data-duels]').innerHTML = s.duels
-    .map((d) => {
-      const rWon = d.settled && d.winner === 'ryobi';
-      const bWon = d.settled && d.winner === 'blackdecker';
-      const tie = d.settled && d.winner === 'tie';
-      const cls = (side) =>
-        !d.settled ? '' : tie ? '' : (side === 'r' ? rWon : bWon) ? ' won' : ' lost';
-
-      const mid = !d.settled
-        ? `Duel ${d.id}<br>${d.strokes === 0 ? 'Scratch' : `${d.strokes} to ${esc(d.givenTo)}`}`
-        : tie
-        ? `<span class="tie">TIE</span>`
-        : `Duel ${d.id}<br>${d.strokes === 0 ? 'Scratch' : `${d.strokes} to ${esc(d.givenTo)}`}`;
-
-      return `<div class="duelrow">
-          <div class="side r${cls('r')}">
-            <div class="who">${esc(d.ryobi)}</div>
-            <div class="netv">${d.settled ? `net ${d.ryobiNet}` : `plays ${d.ryobiHdcp}`}</div>
-          </div>
-          <div class="mid">${mid}</div>
-          <div class="side b${cls('b')}">
-            <div class="who">${esc(d.blackdecker)}</div>
-            <div class="netv">${d.settled ? `net ${d.bdNet}` : `plays ${d.bdHdcp}`}</div>
-          </div>
-        </div>`;
-    })
-    .join('');
+  $('[data-duels]').innerHTML = s.duels.map((d) => duelRow(d, esc)).join('');
 }
 
 /* ── Confetti, once ───────────────────────────────────────────────────────── */

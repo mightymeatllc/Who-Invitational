@@ -1,5 +1,6 @@
 import { chrome, badge, esc } from './site.js';
 import { DUELS } from './jabs.js';
+import { duelRow } from './duelrow.js';
 
 const r = await chrome();
 
@@ -42,3 +43,38 @@ document.querySelector('[data-duels]').innerHTML = r.duels
     </article>`
   )
   .join('');
+
+/*
+ * Live results. The matchups above are the fixture list; this is the state of
+ * play, drawn with the same row the Scoreboard uses so the two pages cannot
+ * contradict each other.
+ */
+const board = document.querySelector('[data-live]');
+
+async function tick() {
+  let state;
+  try {
+    const res = await fetch('/api/state', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`api ${res.status}`);
+    state = await res.json();
+  } catch {
+    board.innerHTML = '<p class="note">Scoreboard unreachable — matchups above are unaffected.</p>';
+    return;
+  }
+
+  const started = state.duels.some((d) => d.through > 0 || d.settled);
+  if (!started) {
+    board.innerHTML =
+      '<p class="note">Nothing posted yet. Duels appear here hole by hole once cards start going in, ' +
+      'and lock when both men finish.</p>';
+    return;
+  }
+
+  const done = state.duels.filter((d) => d.settled).length;
+  board.innerHTML =
+    `<p class="kicker" style="margin-bottom:.6rem">${done} of ${state.duels.length} settled</p>` +
+    state.duels.map((d) => duelRow(d, esc)).join('');
+}
+
+tick();
+setInterval(tick, 20000);

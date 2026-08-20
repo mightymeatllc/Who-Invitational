@@ -101,7 +101,8 @@ async function getRoster(request, env) {
   }
 
   const pars = Object.fromEntries(r.course.holes.map((h) => [h.hole, h.par]));
-  rosterCache = { raw: r, units, pars };
+  const sidx = Object.fromEntries(r.course.holes.map((h) => [h.hole, h.strokeIndex]));
+  rosterCache = { raw: r, units, pars, sidx };
   return rosterCache;
 }
 
@@ -152,6 +153,19 @@ async function readCards(env) {
 /* Triple bogey max on any hole. */
 const capHole = (strokes, par) => Math.min(strokes, par + 3);
 
+/*
+ * Strokes a unit receives on one hole, allocated by stroke index off the
+ * President's Reserve card. A 23 handicap takes two shots on the five hardest
+ * holes and one on the rest; a 12 takes one shot on stroke index 1 through 12.
+ * Summed across eighteen holes this always equals the playing handicap, which
+ * is what makes a running net agree with the finished net exactly.
+ */
+function strokesOnHole(handicap, strokeIndex) {
+  if (handicap <= 0) return 0;
+  const loops = Math.floor(handicap / 18);
+  return strokeIndex <= handicap - loops * 18 ? loops + 1 : loops;
+}
+
 async function buildState(request, env) {
   const roster = await getRoster(request, env);
   const cards = await readCards(env);
@@ -164,8 +178,21 @@ async function buildState(request, env) {
     const complete = played === 18;
 
     /* Gross is live from the first hole posted. */
-    const gross = holes.reduce((sum, h, i) => (h === null ? sum : sum + h), 0);
+    const gross = holes.reduce((sum, h) => (h === null ? sum : sum + h), 0);
     const adjusted = holes.reduce((sum, h, i) => (h === null ? sum : sum + capHole(h, roster.pars[i + 1])), 0);
+
+    /* Running net over the holes actually played, with each hole's strokes
+       allocated by stroke index. At eighteen holes this equals
+       adjustedGross - handicap; before that it is a real, comparable figure
+       rather than a partial total waiting on the rest of the card. */
+    let netThrough = 0;
+    let parPlayed = 0;
+    holes.forEach((h, i) => {
+      if (h === null) return;
+      const hole = i + 1;
+      netThrough += capHole(h, roster.pars[hole]) - strokesOnHole(u.handicap, roster.sidx[hole]);
+      parPlayed += roster.pars[hole];
+    });
 
     return {
       id: u.id,
@@ -181,7 +208,13 @@ async function buildState(request, env) {
       gross,
       adjustedGross: adjusted,
       complete,
-      /* Rule 2: net does not exist until the card is finished. */
+      /* Live from the first hole posted. */
+      netThrough: played ? netThrough : null,
+      parPlayed: played ? parPlayed : null,
+      /* Net relative to the par of the holes played — the figure that compares
+         fairly between two men who are through different numbers of holes. */
+      toPar: played ? netThrough - parPlayed : null,
+      /* The official 18-hole net. Only exists once the card is finished. */
       net: complete ? adjusted - u.handicap : null,
       updatedAt: card ? card.updatedAt : null
     };
@@ -193,10 +226,15 @@ async function buildState(request, env) {
     const done = mine.filter((u) => u.complete);
     const allIn = done.length === mine.length;
 
-    /* Live "currently the drop": worst net among the cards that ARE in. It
-       moves all afternoon and the man sitting in it gets to watch it. */
-    const ranked = [...done].sort((a, b) => a.net - b.net);
+    /* Live "currently the drop": worst net-to-par among everyone who has posted
+       anything at all, so the slot moves from the first hole rather than
+       waiting for finished cards. Once every card is in, to-par and net rank
+       identically (to-par is just net minus 72), so this is the same answer
+       the final standings give. */
+    const started = mine.filter((u) => u.holesPlayed > 0);
+    const ranked = [...started].sort((a, b) => a.toPar - b.toPar);
     const dropId = ranked.length ? ranked[ranked.length - 1].id : null;
+    const byNet = [...done].sort((a, b) => a.net - b.net);
 
     byTeam[t.id] = {
       id: t.id,
@@ -209,7 +247,7 @@ async function buildState(request, env) {
       /* A team's drop is settled once that team's seven cards are in — it does
          not depend on the other team. The total does. */
       dropIsFinal: allIn,
-      _best: allIn ? ranked.slice(0, r.format.countBestUnits).reduce((s, u) => s + u.net, 0) : null,
+      _best: allIn ? byNet.slice(0, r.format.countBestUnits).reduce((s, u) => s + u.net, 0) : null,
       total: null
     };
   }
@@ -233,18 +271,40 @@ async function buildState(request, env) {
         : { tie: false, winner: a.total < b.total ? a.id : b.id, loser: a.total < b.total ? b.id : a.id, margin };
   }
 
-  /* Duels lock the moment both cards in that duel are complete. */
+  /* Duels run live and lock the moment both cards are complete. */
   const unitFor = (label) => units.find((u) => u.label === label);
   const duels = r.duels.map((d) => {
     const ru = unitFor(d.ryobi);
     const bu = unitFor(d.blackdecker);
     const settled = Boolean(ru && bu && ru.complete && bu.complete);
+
+    /* Live standing over the holes BOTH men have played. Comparing a man
+       through twelve against a man through six would say more about pace of
+       play than about golf. */
+    let through = 0;
+    let liveRyobi = 0;
+    let liveBd = 0;
+    if (ru && bu) {
+      for (let i = 0; i < 18; i++) {
+        if (ru.holes[i] === null || bu.holes[i] === null) continue;
+        const hole = i + 1;
+        const par = roster.pars[hole];
+        const si = roster.sidx[hole];
+        liveRyobi += capHole(ru.holes[i], par) - strokesOnHole(ru.handicap, si);
+        liveBd += capHole(bu.holes[i], par) - strokesOnHole(bu.handicap, si);
+        through++;
+      }
+    }
+    const margin = liveBd - liveRyobi; // positive = Ryobi ahead
+    const leader = through === 0 ? null : margin > 0 ? 'ryobi' : margin < 0 ? 'blackdecker' : 'tie';
+
     let winner = null;
     if (settled) {
       if (ru.net < bu.net) winner = 'ryobi';
       else if (bu.net < ru.net) winner = 'blackdecker';
       else winner = 'tie';
     }
+
     return {
       id: d.id,
       ryobi: d.ryobi,
@@ -255,6 +315,15 @@ async function buildState(request, env) {
       bdNet: settled ? bu.net : null,
       strokes: d.strokes,
       givenTo: d.givenTo,
+      /* Live: holes both have played, each man's net over those holes, and who
+         is up by how many. */
+      through,
+      liveRyobiNet: through ? liveRyobi : null,
+      liveBdNet: through ? liveBd : null,
+      leader,
+      margin: through ? Math.abs(margin) : null,
+      ryobiThrough: ru ? ru.holesPlayed : 0,
+      bdThrough: bu ? bu.holesPlayed : 0,
       settled,
       winner
     };
