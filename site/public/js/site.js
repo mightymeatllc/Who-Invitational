@@ -5,7 +5,6 @@ const PAGES = [
   { href: '/',             id: 'event',      label: 'Event' },
   { href: '/teams.html',   id: 'teams',      label: 'Teams' },
   { href: '/duels.html',   id: 'duels',      label: 'The Duel Card' },
-  { href: '/rap-sheet.html', id: 'rapsheet', label: 'Rap Sheet' },
   { href: '/scoreboard.html', id: 'scoreboard', label: 'Scoreboard' }
 ];
 

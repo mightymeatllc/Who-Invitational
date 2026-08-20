@@ -1,4 +1,5 @@
 import { chrome, badge, esc } from './site.js';
+import { PLAYERS } from './jabs.js';
 
 const r = await chrome();
 
@@ -17,13 +18,17 @@ document.querySelector('[data-teams]').innerHTML = r.teams
         <div class="strokes">${given} strokes given &nbsp;·&nbsp; 7 units &nbsp;·&nbsp; best 6 count</div>
         <ul class="roster">
           ${players
-            .map(
-              (p) => `<li${p.playsAs === 'scramble' ? ' class="is-scramble"' : ''}>
-                <span class="who">${esc(p.name)}</span>
-                <span class="role">${p.playsAs === 'scramble' ? 'Scramble · White' : 'Individual · Blue'}</span>
+            .map((p) => {
+              const j = PLAYERS[p.name] || {};
+              return `<li${p.playsAs === 'scramble' ? ' class="is-scramble"' : ''}>
+                <span class="who">${esc(p.name)}${j.tag ? ` <em class="tag">${esc(j.tag)}</em>` : ''}</span>
                 <span class="hdcp">${p.handicap}</span>
-              </li>`
-            )
+                <span class="role">${p.playsAs === 'scramble' ? 'Scramble · White tees' : 'Individual · Blue tees'}${
+                  p.estimate ? ' · <span class="est">committee estimate</span>' : ''
+                }</span>
+                ${j.line ? `<p class="jab">${esc(j.line)}</p>` : ''}
+              </li>`;
+            })
             .join('')}
           ${
             pair

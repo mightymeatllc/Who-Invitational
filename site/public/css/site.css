@@ -239,6 +239,8 @@ tbody tr:last-child td { border-bottom: 0; }
 td.num, th.num { text-align: right; font-family: var(--mono); font-size: 14px; }
 .name { font-family: var(--display); font-size: 18px; letter-spacing: .02em; }
 .est { color: var(--danger); font-family: var(--mono); font-size: 10px; letter-spacing: .1em; }
+.name .grp { display: block; font-family: var(--mono); font-size: 9px; letter-spacing: .14em; color: var(--text-faint); margin-top: 2px; }
+td.jabcell { font-size: 14.5px; color: #c3c0ba; min-width: 260px; line-height: 1.4; }
 
 /* ── Hero (Event page) ───────────────────────────────────────────────────── */
 .hero {
@@ -302,18 +304,36 @@ td.num, th.num { text-align: right; font-family: var(--mono); font-size: 14px; }
 .roster { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
 .roster li {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   align-items: baseline;
-  gap: 10px;
-  padding: 11px 16px;
+  column-gap: 12px;
+  padding: 13px 16px 15px;
   border-bottom: 1px solid var(--rule);
 }
 .roster li:last-child { border-bottom: 0; }
-.roster .who { font-family: var(--display); font-size: 19px; letter-spacing: .02em; }
-.roster .role { font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em; color: var(--text-faint); text-transform: uppercase; }
+.roster .who {
+  font-family: var(--display); font-size: 21px; letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.roster .who .tag {
+  display: inline-block; font-style: normal; font-family: var(--display);
+  font-size: 12px; letter-spacing: .16em; color: var(--team);
+  margin-left: 8px; vertical-align: 2px;
+}
+.roster .role {
+  grid-column: 1 / -1;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .14em;
+  color: var(--text-faint); text-transform: uppercase; margin-top: 3px;
+}
+.roster .jab {
+  grid-column: 1 / -1;
+  margin: 7px 0 0; font-size: 14.5px; line-height: 1.4; color: #c9c6c0;
+  border-left: 2px solid color-mix(in srgb, var(--team) 40%, transparent);
+  padding-left: 10px;
+}
 .roster .hdcp {
-  font-family: var(--display); font-size: 19px; min-width: 2.2ch; text-align: right;
-  color: var(--team);
+  font-family: var(--display); font-size: 24px; min-width: 2.2ch; text-align: right;
+  color: var(--team); align-self: start;
 }
 .roster li.is-scramble { background: #101014; }
 
@@ -358,94 +378,10 @@ td.num, th.num { text-align: right; font-family: var(--mono); font-size: 14px; }
 }
 .duel-strokes b { color: var(--text); font-weight: 600; }
 .duel-strokes .even { color: var(--text-faint); }
-
-/* ── Rap sheet ───────────────────────────────────────────────────────────── */
-.sheetgrid { display: grid; gap: 16px; }
-@media (min-width: 700px) { .sheetgrid { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 1040px) { .sheetgrid { grid-template-columns: 1fr 1fr 1fr; } }
-
-.dossier {
-  position: relative;
-  background: var(--panel);
-  border: 1px solid var(--rule);
-  border-top: 4px solid var(--team, var(--rule-hot));
-  padding: 16px 16px 18px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.duel-note {
+  margin: 0; padding: 12px 14px 14px; border-top: 1px solid var(--rule);
+  font-size: 14.5px; line-height: 1.45; color: #c3c0ba; background: #101013;
 }
-.dossier::before {
-  content: '';
-  position: absolute; inset-inline: 0; top: 0; height: 120px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--team) 8%, transparent), transparent);
-  pointer-events: none;
-}
-.dossier--wide { grid-column: 1 / -1; }
-
-.dossier-top { display: flex; align-items: flex-start; gap: 12px; position: relative; }
-.dossier-no {
-  font-family: var(--mono); font-size: 10px; letter-spacing: .16em;
-  color: var(--text-faint); text-transform: uppercase;
-}
-.dossier-top .badge--stamp { margin-left: auto; transform: rotate(2.5deg); flex: 0 0 auto; }
-
-.dossier h3 {
-  font-size: clamp(28px, 7vw, 38px);
-  text-transform: uppercase;
-  letter-spacing: -.005em;
-  margin-top: 6px;
-  color: var(--text);
-}
-.dossier .alias {
-  font-family: var(--display);
-  font-size: 15px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--team);
-  margin-top: 4px;
-}
-.dossier .charge {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  color: var(--danger);
-  border: 1px dashed color-mix(in srgb, var(--danger) 55%, transparent);
-  padding: 7px 9px;
-  margin-top: 12px;
-}
-.dossier .charge span {
-  display: block; font-size: 8.5px; letter-spacing: .22em; color: var(--text-faint); margin-bottom: 3px;
-}
-.dossier .tape {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  margin-top: 14px;
-}
-.dossier .tape div { background: var(--panel-2); padding: 8px 9px; }
-.dossier .tape dt {
-  font-family: var(--mono); font-size: 8.5px; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--text-faint);
-}
-.dossier .tape dd { margin: 3px 0 0; font-family: var(--display); font-size: 18px; }
-.dossier .body { margin-top: 14px; font-size: 15.5px; color: #d8d5cf; }
-.dossier .counts {
-  margin: 14px 0 0; padding: 12px 0 0; border-top: 1px solid var(--rule);
-  list-style: none; display: grid; gap: 9px;
-}
-.dossier .counts li {
-  font-size: 14.5px; color: var(--text-dim); padding-left: 22px; position: relative;
-}
-.dossier .counts li::before {
-  content: 'CT ' counter(ct, decimal-leading-zero);
-  counter-increment: ct;
-  position: absolute; left: 0; top: 2px;
-  font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em; color: var(--danger);
-}
-.dossier .counts { counter-reset: ct; }
 
 /* ── Scoreboard ──────────────────────────────────────────────────────────── */
 .board-status {
@@ -575,6 +511,10 @@ canvas.confetti {
 }
 .drop .fig b { display: block; font-family: var(--display); font-size: 26px; letter-spacing: .02em; color: var(--text); margin-top: 2px; }
 .drop .verdict { margin-top: 14px; font-size: 15.5px; color: #cfc9c6; }
+.drop .verdict.personal {
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(200,53,43,.35);
+  color: #e6ddda;
+}
 .drop.is-provisional { border-color: var(--rule-hot); }
 .drop.is-provisional .title, .drop.is-provisional h3 { color: var(--text-dim); }
 .drop.is-provisional h3 { text-decoration-color: var(--rule-hot); }

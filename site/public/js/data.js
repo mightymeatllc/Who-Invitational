@@ -9,8 +9,8 @@
  * Milo is OUT pending a knee decision. If he plays, he takes Adam's seat and
  * Adam is out; the field stays at 16. Swap the single Adam record in
  * data/roster.json for Milo (index 25.0, playing 23, estimate: true) and every
- * page on this site updates itself — teams, duels, carts, rap sheet, scoreboard.
- * Also uncomment the Milo entry in js/dossiers.js.
+ * page on this site updates itself — teams, duels, carts, jabs, scoreboard.
+ * Also uncomment the Milo entry in js/jabs.js.
  *
  * ⚠ WARNING: that swap is not balanced. Adam plays off 10; Milo plays off a
  * committee 23. Ryobi's strokes given moves 90 → 103 against Black & Decker's
@@ -72,7 +72,7 @@ function decorate(r) {
     }
   }
 
-  /* Opponent lookup for a dossier card. Scramble men point at the other pair. */
+  /* Opponent lookup. Scramble men point at the other pair. */
   const opponentOf = (name) => {
     const p = byName[name];
     if (!p || !p.duelRef) return null;

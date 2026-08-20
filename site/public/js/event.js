@@ -1,5 +1,6 @@
 import { chrome, badge, esc } from './site.js';
 import { money } from './data.js';
+import { CARTS } from './jabs.js';
 
 const r = await chrome();
 
@@ -31,11 +32,16 @@ document.querySelector('[data-money]').innerHTML =
 
 const carts = document.querySelector('[data-carts]');
 carts.innerHTML =
-  '<thead><tr><th class="num">Cart</th><th>Riders</th><th>Group</th><th>Off</th></tr></thead><tbody>' +
+  '<thead><tr><th class="num">Cart</th><th>Riders</th><th>Off</th><th>The committee notes</th></tr></thead><tbody>' +
   r.carts
     .map((c) => {
       const off = { A: '9:00', B: '9:10', C: '9:20', D: '9:30' }[c.group] || '';
-      return `<tr><td class="num">${c.cart}</td><td class="name">${esc(c.riders.join(' / '))}</td><td>${esc(c.group)}</td><td class="num">${off} AM</td></tr>`;
+      return `<tr>
+        <td class="num">${c.cart}</td>
+        <td class="name">${esc(c.riders.join(' / '))}<small class="grp">Group ${esc(c.group)}</small></td>
+        <td class="num">${off}</td>
+        <td class="jabcell">${esc(CARTS[c.cart] || '')}</td>
+      </tr>`;
     })
     .join('') +
   '</tbody>';

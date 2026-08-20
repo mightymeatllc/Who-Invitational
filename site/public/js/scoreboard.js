@@ -1,5 +1,6 @@
 import { chrome, badge, esc } from './site.js';
 import { money } from './data.js';
+import { PLAYERS } from './jabs.js';
 
 const roster = await chrome();
 const $ = (sel) => document.querySelector(sel);
@@ -105,13 +106,18 @@ function renderDrops(s) {
 
       const sub = unit.kind === 'scramble' ? unit.members.join(' + ') : null;
 
+      /* Personalised where we have something on him, which is everybody. For a
+         scramble pair, both men get named — one ball, two reputations. */
+      const named = unit.kind === 'scramble'
+        ? unit.members.map((m) => PLAYERS[m] && PLAYERS[m].drop).filter(Boolean).join(' ')
+        : (PLAYERS[unit.label] || {}).drop || '';
+
       const verdict = ts.dropIsFinal
         ? `${unit.kind === 'scramble' ? 'Two men, one ball,' : 'Eighteen holes,'} and not one shot of it counted. ` +
           `${unit.kind === 'scramble' ? 'Their round' : 'His round'} has been thrown away — the team scored the other six and did it without ` +
           `${unit.kind === 'scramble' ? 'them' : 'him'}.` +
           (clear === null ? '' : ` ${clear} stroke${clear === 1 ? '' : 's'} clear of relevance.`)
-        : `Currently contributing nothing. This slot updates as cards come in, so there is still time — ` +
-          `not much, and not for everyone, but some.`;
+        : 'Currently contributing nothing. This slot updates as the cards come in, so there is still time — not much, and not for everyone, but some.';
 
       return `<article class="drop${ts.dropIsFinal ? '' : ' is-provisional'}" data-team="${t.id}">
           ${badge(roster.teamById[t.id], 'default', 'badge--sm')}
@@ -125,6 +131,7 @@ function renderDrops(s) {
             ${clear === null ? '' : `<span>Clear of relevance<b>+${clear}</b></span>`}
           </div>
           <div class="verdict">${esc(verdict)}</div>
+          ${ts.dropIsFinal && named ? `<p class="verdict personal">${esc(named)}</p>` : ''}
         </article>`;
     })
     .join('');

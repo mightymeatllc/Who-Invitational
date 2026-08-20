@@ -1,4 +1,5 @@
 import { chrome, badge, esc } from './site.js';
+import { DUELS } from './jabs.js';
 
 const r = await chrome();
 
@@ -37,6 +38,7 @@ document.querySelector('[data-duels]').innerHTML = r.duels
         <span>${d.id === 7 ? '2-man scramble' : 'Singles'}</span>
         <span>Side wager: private</span>
       </div>
+      ${DUELS[d.id] ? `<p class="duel-note">${esc(DUELS[d.id])}</p>` : ''}
     </article>`
   )
   .join('');

@@ -14,7 +14,6 @@ const pages = [
   ['index.html', '/'],
   ['teams.html', '/teams.html'],
   ['duels.html', '/duels.html'],
-  ['rap-sheet.html', '/rap-sheet.html'],
   ['scoreboard.html', '/scoreboard.html'],
   ['enter.html', '/enter.html']
 ];

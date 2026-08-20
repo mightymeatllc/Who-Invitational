@@ -3,12 +3,17 @@
 Tournament site for Saturday, August 29 — Hermitage Golf Course, President's Reserve.
 Static pages plus a live scoreboard, both served by one Cloudflare Worker.
 
+There is no dedicated roast page. The material on each player is dealt out
+across the site — an epithet and a jab on every roster row, a committee note on
+every cart, a case note on every duel, and a personalised verdict on the
+scoreboard for whoever ends up as the dropped score.
+
 ## Layout
 
 ```
 site/public/            static site (assets.directory)
   data/roster.json      ← single source of truth: players, teams, duels, carts, format
-  js/dossiers.js        ← roast copy only, keyed by player name
+  js/jabs.js            ← roast copy only, keyed by player name
   js/data.js            roster loader + derived views (units, opponents, pairs)
   js/site.js            shared chrome, logo helpers, escaping
   fonts/                self-hosted Oswald + Barlow Condensed
@@ -100,7 +105,7 @@ field stays at 16:
 
 1. Swap the Adam record in `data/roster.json` for Milo — index 25.0, playing 23,
    `estimate: true`, same team/duel/cart.
-2. Uncomment the Milo entry in `js/dossiers.js`.
+2. Uncomment the Milo entry in `js/jabs.js`.
 
 Every page follows automatically. **The swap is not balanced:** Adam plays off
 10 and Milo off a committee 23, which moves Ryobi from 90 strokes given to 103
