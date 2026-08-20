@@ -7,10 +7,11 @@
     "preview": "node tools/dev-server.mjs",
     "check": "node tools/check.mjs",
     "deploy:staging": "wrangler deploy --env staging",
-    "deploy": "wrangler deploy"
+    "dry": "wrangler deploy --env staging --dry-run",
+    "deploy": "wrangler deploy --env=\"\""
   },
   "devDependencies": {
     "playwright": "^1.47.0",
-    "wrangler": "^3.78.0"
+    "wrangler": "^4.124.0"
   }
 }

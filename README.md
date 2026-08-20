@@ -52,11 +52,20 @@ original delivered bundle, kept as received. The live files are the ones under
 ## Running it
 
 ```bash
-npm install
-npm run preview     # local harness on :8788 — no Cloudflare account needed
+npm run preview     # local harness on :8788 — no install, no Cloudflare account
+npm run check       # scoring-rule assertions (59 of them)
+
+npm install         # only needed for Wrangler
+npm run dry         # validate the config and bundle, no account touched
 npm run dev         # wrangler dev, real Workers runtime + local KV, on :8787
-npm run check       # scoring-rule assertions (39 checks)
 ```
+
+`preview` and `check` use nothing but Node built-ins and run with no
+`node_modules` at all.
+
+**Wrangler 4 is required** — wrangler 3 rejects `assets.run_worker_first` as an
+array, which is how `/api/*` is routed to the Worker while everything else is
+served as a static file. `package.json` pins `^4.124.0`.
 
 ## Deploying
 

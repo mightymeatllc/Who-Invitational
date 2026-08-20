@@ -27,6 +27,39 @@ npm install
 
 Needs Node 18 or newer (`node --version`).
 
+**Wrangler 4 is required.** Wrangler 3 rejects this config outright:
+
+```
+✘ [ERROR] Expected "assets.run_worker_first" to be of type boolean but got ["/api/*"].
+```
+
+Routing `/api/*` to the Worker while everything else is served as a static file
+is a Wrangler 4 feature. `package.json` pins `^4.124.0`, which is the version
+both dry runs were validated against. If you installed before that pin existed:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+node -p "require('./node_modules/wrangler/package.json').version"   # want 4.x
+```
+
+### About the install warnings
+
+- **Vulnerabilities.** With wrangler 4 pinned there are none — `npm audit`
+  reports 0. If you saw "6 vulnerabilities (2 moderate, 4 high)", that was
+  wrangler 3's dependency tree; reinstalling clears it. **Do not run
+  `npm audit fix --force`** — it would pull breaking major versions.
+- **`allow-scripts` on esbuild / workerd / sharp.** Newer npm blocks install
+  scripts by default. Step 5 below is the gate that tells you whether it
+  matters: if the dry run succeeds, the deploy will too. If it fails, run
+  `npm approve-scripts --allow-scripts-pending` and try again.
+- **Deprecation notices** for `rollup-plugin-inject` and `sourcemap-codec` also
+  came from wrangler 3 and are gone in 4.
+
+Note that `npm install` is only needed for Wrangler. `npm run check` and
+`npm run preview` use nothing but Node built-ins and run with no
+`node_modules` at all.
+
 ## 3. Look at it locally first
 
 ```bash
@@ -47,7 +80,29 @@ npm run check
 scramble pairs and all three scoring rules. Everything should say PASS. If
 anything fails, stop and fix it before deploying.
 
-## 5. Log in to Cloudflare
+## 5. Dry run — the gate
+
+```bash
+npm run dry
+```
+
+This validates the config and bundles the Worker without touching your account
+or needing a login. You want:
+
+```
+✨ Read 32 files from the assets directory
+Total Upload: 7.96 KiB / gzip: 2.88 KiB
+Your Worker has access to the following bindings:
+env.SCORES (REPLACE_WITH_STAGING_KV_NAMESPACE_ID)   KV Namespace
+env.ASSETS                                          Assets
+env.SCORER_KEY ("meat")                             Environment Variable
+--dry-run: exiting now.
+```
+
+The `REPLACE_WITH_...` placeholder is expected here — you fill it in at step 8.
+If this step fails, stop; nothing past it will work.
+
+## 6. Log in to Cloudflare
 
 ```bash
 npx wrangler login
@@ -64,7 +119,7 @@ npx wrangler whoami
 
 ---
 
-## 6. Create the staging scoreboard storage
+## 7. Create the staging scoreboard storage
 
 ```bash
 npx wrangler kv namespace create SCORES --env staging
@@ -82,7 +137,7 @@ It prints something like:
 > That one is bound to the live site and holds the current cards — a test score
 > posted during review would land in real data.
 
-## 7. Paste the id into the config
+## 8. Paste the id into the config
 
 Open `wrangler.jsonc` and replace `REPLACE_WITH_STAGING_KV_NAMESPACE_ID`
 on **line 46** with the id from the previous step:
@@ -102,10 +157,10 @@ on **line 46** with the id from the previous step:
 
 A namespace id is an identifier, not a credential — it is fine to commit it.
 
-## 8. Deploy staging
+## 9. Deploy staging
 
 ```bash
-npx wrangler deploy --env staging
+npm run deploy:staging
 ```
 
 You get a URL back:
@@ -117,7 +172,7 @@ https://who-invitational-staging.mightymeatllc.workers.dev
 **The live site is untouched.** Different Worker, different URL, different
 storage.
 
-## 9. Smoke test staging
+## 10. Smoke test staging
 
 Open the URL and walk the four pages: Event, Teams, The Duel Card, Scoreboard.
 Then test the scoreboard end to end:
@@ -147,7 +202,7 @@ npx wrangler kv key list --binding SCORES --env staging --remote \
 
 ---
 
-## 10. Production, once you are happy
+## 11. Production, once you are happy
 
 This **replaces the live site** at `who-invitational.mightymeatllc.workers.dev`.
 Same Worker name, same URL — the four-team version is gone the moment this
@@ -160,7 +215,7 @@ npx wrangler kv namespace create SCORES
 Paste that id over `REPLACE_WITH_KV_NAMESPACE_ID` on **line 21**, then:
 
 ```bash
-npx wrangler deploy --env=""
+npm run deploy
 ```
 
 The empty `--env=""` is deliberate: Wrangler 4 warns on a bare `deploy` when the
@@ -171,7 +226,7 @@ config has named environments, to stop you shipping the wrong one.
 > `card:ryobi-jipp` and `card:bd-scramble`. Old keys would sit there inert but
 > confusing.
 
-## 11. Commit the ids
+## 12. Commit the ids
 
 ```bash
 git add wrangler.jsonc
