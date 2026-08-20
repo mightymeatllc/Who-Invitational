@@ -1,0 +1,50 @@
+{
+  // The Who? Invitational Open
+  // Static site + scoreboard API on one Worker.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "who-invitational",
+  "main": "site/src/index.js",
+  "compatibility_date": "2026-08-01",
+
+  "assets": {
+    "directory": "site/public",
+    "binding": "ASSETS",
+    // API routes are handled by the Worker; everything else is a static file.
+    "run_worker_first": ["/api/*"]
+  },
+
+  "kv_namespaces": [
+    {
+      "binding": "SCORES",
+      // Replace with the real namespace id before deploying:
+      //   npx wrangler kv namespace create SCORES
+      "id": "REPLACE_WITH_KV_NAMESPACE_ID"
+    }
+  ],
+
+  "vars": {
+    // Anyone posting a card must send this in X-Scorer-Key.
+    // Override for production with:  npx wrangler secret put SCORER_KEY
+    "SCORER_KEY": "who29"
+  },
+
+  "observability": { "enabled": true },
+
+  // Staging. Separate Worker, separate KV, its own workers.dev URL — review it
+  // here before anything is promoted to production.
+  //   npx wrangler deploy --env staging
+  "env": {
+    "staging": {
+      "name": "who-invitational-staging",
+      "workers_dev": true,
+      "kv_namespaces": [
+        {
+          "binding": "SCORES",
+          // npx wrangler kv namespace create SCORES --env staging
+          "id": "REPLACE_WITH_STAGING_KV_NAMESPACE_ID"
+        }
+      ],
+      "vars": { "SCORER_KEY": "who29-staging" }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Post a Card — The Who? Invitational Open</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#08080a">
+<link rel="preload" href="/fonts/Oswald-variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/BarlowCondensed-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body data-page="scoreboard">
+
+<header class="masthead">
+  <div class="wrap">
+    <h1 class="wordmark">The&nbsp;Who<span class="q">?</span> Invitational <span class="open">Open</span></h1>
+    <div class="presented">Presented by Ryobi</div>
+    <div class="eventline" data-eventline></div>
+    <nav class="tabs" data-nav aria-label="Primary"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section aria-labelledby="h-post">
+    <div class="sechead"><h2 id="h-post">Post a Card</h2><span class="idx">Gross, hole by hole</span></div>
+    <p class="note" style="margin-bottom:20px">Enter gross strokes. The triple-bogey cap is applied for you — post what you actually shot. Leave a hole blank until it is played; gross shows on the scoreboard immediately, net appears only when all eighteen are in.</p>
+
+    <form class="panel" data-form>
+      <div class="field">
+        <label for="unit">Scoring unit</label>
+        <select id="unit" name="unit" required></select>
+      </div>
+      <div class="field">
+        <label for="key">Scorer key</label>
+        <input type="password" id="key" name="key" autocomplete="current-password" required>
+      </div>
+
+      <div class="field">
+        <label>Front nine</label>
+        <div class="holes" data-front></div>
+      </div>
+      <div class="field">
+        <label>Back nine</label>
+        <div class="holes" data-back></div>
+      </div>
+
+      <button class="btn" type="submit">Submit card</button>
+      <div class="msg" data-msg role="status"></div>
+    </form>
+  </section>
+</main>
+
+<footer class="foot wrap" data-foot></footer>
+<script type="module" src="/js/enter.js"></script>
+</body>
+</html>
